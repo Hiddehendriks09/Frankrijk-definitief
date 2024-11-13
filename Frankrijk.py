@@ -32,8 +32,8 @@ def process_files(main_file, reference_file, invoice_files, start_date, end_date
     selected_columns = ["Name", "Created at", "Fulfilled at", "Lineitem quantity", "Lineitem name", "Billing Name", "Billing Street", "Alcohol Percentage", "Excise code"]
     new_df = df[selected_columns]
     new_df = new_df.rename(columns={"Name": "Invoice/order", "Created at": "Invoice date", "Fulfilled at": "Delivery date","Lineitem name": "Product name", "Lineitem quantity": "Number of sold items", "Billing Name": "Name of client", "Billing Street": "Address details"  })
-    new_df['Invoice date'] = pd.to_datetime(new_df['Invoice date']).dt.tz_localize(None)
-    new_df['Delivery date'] = pd.to_datetime(new_df['Delivery date']).dt.tz_localize(None)
+    new_df['Invoice date'] = pd.to_datetime(new_df['Invoice date'].str.slice(0, 19), errors='coerce')
+    new_df['Delivery date'] = pd.to_datetime(new_df['Delivery date'].str.slice(0, 19), errors='coerce')
     new_df["Plato percentage"] = 0
     new_df['Content'] = (new_df['Product name'].str.extract(r'(\d+)(?!.*\d)').astype(float).astype('Int64'))/10
     new_df["Total content"] = new_df["Content"]*new_df["Number of sold items"]
