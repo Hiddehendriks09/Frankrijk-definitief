@@ -35,7 +35,12 @@ def process_files(main_file, reference_file, invoice_files, start_date, end_date
     new_df['Invoice date'] = pd.to_datetime(new_df['Invoice date'].str.slice(0, 19), errors='coerce')
     new_df['Delivery date'] = pd.to_datetime(new_df['Delivery date'].str.slice(0, 19), errors='coerce')
     new_df["Plato percentage"] = 0
-    new_df['Content'] = (new_df['Product name'].str.extract(r'(\d+)(?!.*\d)').astype(float).astype('Int64'))/10
+    # Compute 'Content' column
+    new_df['Content'] = (new_df['Product name'].str.extract(r'(\d+)(?!.*\d)').astype(float).astype('Int64')) / 10
+
+    # Ensure 'Content' only has integers (removing .0)
+    new_df['Content'] = new_df['Content'].fillna(0).astype(int)  # Replace NaN with 0 and cast to integer
+
     new_df["Total content"] = new_df["Content"]*new_df["Number of sold items"]
 
     filtered_df = new_df[(new_df['Delivery date'] >= start_date) & (new_df['Delivery date'] <= end_date)]
