@@ -105,7 +105,7 @@ if st.button("Process Files"):
             processed_data, pdfs, errors = process_files(uploaded_file, reference_file, invoice_file, start_date, end_date)
             
             # Convert processed data to CSV
-            csv = processed_data.to_csv(index=False).encode('utf-8')
+            csv = processed_data.to_csv(index=False, sep=';').encode('utf-8')
             formatted_start_time = start_date.strftime('%Y%m%d')
             formatted_end_time = end_date.strftime('%Y%m%d')
             csv_name = f"FR_VINIOWIJNIMPORT_{formatted_start_time}_to_{formatted_end_time}.csv"
